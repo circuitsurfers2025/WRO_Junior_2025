@@ -1,2 +1,2 @@
 import motor
-urvish is a loser
+shut up

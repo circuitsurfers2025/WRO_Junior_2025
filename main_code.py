@@ -1,2 +1,2 @@
 import motor
-shut up
+shut up you loser(i mean urvish needs to shut up)

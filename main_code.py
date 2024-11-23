@@ -1,7 +1,7 @@
 Microsoft Windows [Version 10.0.26100.2314]
 (c) Microsoft Corporation. All rights reserved.
 
-C:\Users\Tavish>cd C:\Users\Tavish\Documents\dev
+C:\Users\Urvish loser>cd C:\Users\Tavish\Documents\dev
 
 C:\Users\Tavish\Documents\dev>git init
 Initialized empty Git repository in C:/Users/Tavish/Documents/dev/.git/

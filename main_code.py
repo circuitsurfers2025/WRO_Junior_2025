@@ -1,4 +1,4 @@
-import requests
+(this code is to show that you are a loser)import requests
 from bs4 import BeautifulSoup
 import matplotlib.pyplot as plt
 import csv

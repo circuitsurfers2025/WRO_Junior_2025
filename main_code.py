@@ -9,7 +9,7 @@ Initialized empty Git repository in C:/Users/Tavish/Documents/dev/.git/
 C:\Users\Tavish\Documents\dev>git clone https://github.com/circuitsurfers2025/CircuitSurfers.git
 Cloning into 'CircuitSurfers'...
 remote: Enumerating objects: 3, done.
-remote: Counting objects: 100% (3/3), done.
+reote: Counting objects: 100% (3/3), done.
 remote: Compressing objects: 100% (2/2), done.
 remote: Total 3 (delta 0), reused 3 (delta 0), pack-reused 0 (from 0)
 Receiving objects: 100% (3/3), 23.75 KiB | 2.97 MiB/s, done.

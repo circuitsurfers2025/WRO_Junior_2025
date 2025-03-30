@@ -1,0 +1,95 @@
+from hub import port
+import motor, motor_pair, color_sensor, color, runloop
+import time
+
+motor_pair.pair(motor_pair.PAIR_1, port.A, port.B)
+motor.run_to_absolute_position(port.D, 0, 290, direction=motor.CLOCKWISE, stop=motor.SMART_BRAKE)
+motor.run_to_absolute_position(port.E, 160, 290, direction=motor.SHORTEST_PATH, stop=motor.SMART_BRAKE)
+
+async def line_following_fast(distance):
+    motor.reset_relative_position(port.B, 0)
+    while motor.relative_position(port.B) < distance:
+        motor_pair.move(motor_pair.PAIR_1, color_sensor.reflection(port.F) * 2 - 100, velocity=360)
+    motor_pair.stop(motor_pair.PAIR_1)
+
+async def line_following_slow(distance):
+    motor.reset_relative_position(port.B, 0)
+    while motor.relative_position(port.B) < distance:
+        motor_pair.move(motor_pair.PAIR_1, color_sensor.reflection(port.F) * 2 - 100, velocity=260)
+    motor_pair.stop(motor_pair.PAIR_1)
+
+
+async def main():
+    await motor.run_to_absolute_position(port.D, 240, 360, stop=motor.SMART_BRAKE, direction=motor.CLOCKWISE)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1, 360, 0)
+    await line_following_slow(310)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1, 15, 0, velocity=360, stop=motor.SMART_BRAKE)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1, 220, -100, velocity=360, stop=motor.SMART_BRAKE)
+    await line_following_fast(1000)
+    # Mars rover
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 257, 220, -220, stop=motor.SMART_BRAKE)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1, 620, 0, velocity=360, stop=motor.SMART_BRAKE)
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 255, 220, -220, stop=motor.SMART_BRAKE)
+    # Preparing of collecting probes
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1, -820, 0, velocity=400)
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 518, 0, 260, stop=motor.SMART_BRAKE)
+    await motor.run_to_absolute_position(port.D, 165, 180)
+    while color_sensor.color(port.F) != color.BLACK:
+        motor_pair.move(motor_pair.PAIR_1, 0)
+    motor_pair.stop(motor_pair.PAIR_1, stop=motor.SMART_BRAKE)
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1, 42, 0)
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 255, 220, -220, stop=motor.SMART_BRAKE)
+    # Moving forward till Probe1 has been detected
+    motor_pair.move(motor_pair.PAIR_1, 0, velocity=100)
+    switch = 0
+    while switch == 0:
+        if color_sensor.color(port.C) == color.GREEN:
+            motor_pair.stop(motor_pair.PAIR_1)
+            probe1_color = color_sensor.color(port.C)
+            switch = 1
+        elif color_sensor.color(port.C) == color.RED:
+            motor_pair.stop(motor_pair.PAIR_1)
+            probe1_color = color_sensor.color(port.C)
+            switch = 1
+        elif color_sensor.color(port.C) == color.YELLOW:
+            motor_pair.stop(motor_pair.PAIR_1)
+            probe1_color = color_sensor.color(port.C)
+            switch = 1
+        elif color_sensor.color(port.C) == color.WHITE:
+            motor_pair.stop(motor_pair.PAIR_1)
+            probe1_color = color_sensor.color(port.C)
+            motor_pair.move_for_degrees(motor_pair.PAIR_1, -104, 0, stop=motor.SMART_BRAKE)
+            switch = 1
+    time.sleep(1)
+    # Probe1 collection
+    await motor.run_to_absolute_position(port.D, 288, 360, direction=motor.COUNTERCLOCKWISE, stop=motor.SMART_BRAKE)
+    # Moving forward till Probe2 has been detected
+    motor_pair.move(motor_pair.PAIR_1, 0, velocity=100)
+    switch = 0
+    while switch == 0:
+        if color_sensor.color(port.C) == color.GREEN:
+            motor_pair.stop(motor_pair.PAIR_1)
+            motor_pair.move_for_degrees(motor_pair.PAIR_1, -30, 0, stop=motor.SMART_BRAKE)
+            probe2_color = color_sensor.color(port.C)
+            switch = 1
+        elif color_sensor.color(port.C) == color.RED:
+            motor_pair.stop(motor_pair.PAIR_1)
+            probe2_color = color_sensor.color(port.C)
+            switch = 1
+        elif color_sensor.color(port.C) == color.YELLOW:
+            motor_pair.stop(motor_pair.PAIR_1)
+            probe2_color = color_sensor.color(port.C)
+            switch = 1
+        elif color_sensor.color(port.C) == color.WHITE:
+            motor_pair.stop(motor_pair.PAIR_1)
+            probe2_color = color_sensor.color(port.C)
+            motor_pair.move_for_degrees(motor_pair.PAIR_1, -104, 0, stop=motor.SMART_BRAKE)
+            switch = 1
+    time.sleep(1)
+    # Probe2 collection
+    await motor.run_for_degrees(port.A, -40, 100)
+    await motor.run_to_absolute_position(port.E, 80, 150, direction=motor.CLOCKWISE, stop=motor.SMART_BRAKE)
+    await motor.run_for_degrees(port.A, 40, 100)
+
+
+runloop.run(main())

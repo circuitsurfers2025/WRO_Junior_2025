@@ -20,7 +20,7 @@ async def line_following_slow(distance):
 
 
 async def main():
-    await motor.run_to_absolute_position(port.D, 240, 360, stop=motor.SMART_BRAKE, direction=motor.CLOCKWISE)
+    await motor.run_to_absolute_position(port.D, 285, 360, stop=motor.SMART_BRAKE, direction=motor.CLOCKWISE)
     await motor_pair.move_for_degrees(motor_pair.PAIR_1, 360, 0)
     await line_following_slow(310)
     await motor_pair.move_for_degrees(motor_pair.PAIR_1, 15, 0, velocity=360, stop=motor.SMART_BRAKE)

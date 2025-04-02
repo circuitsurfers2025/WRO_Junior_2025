@@ -2,6 +2,7 @@ from hub import port
 import motor, motor_pair, color_sensor, color, runloop
 import time
 
+#Hello
 motor_pair.pair(motor_pair.PAIR_1, port.A, port.B)
 motor.run_to_absolute_position(port.D, 0, 290, direction=motor.CLOCKWISE, stop=motor.SMART_BRAKE)
 motor.run_to_absolute_position(port.E, 160, 290, direction=motor.SHORTEST_PATH, stop=motor.SMART_BRAKE)
